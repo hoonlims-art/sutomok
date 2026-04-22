@@ -115,6 +115,16 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
   .preview-wrap{grid-template-columns:repeat(3,1fr);}
   footer{flex-direction:column;gap:12px;text-align:center;padding:30px 20px;}
 }
+
+/* 관리자 모드 */
+.admin-bar{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-bottom:16px;}
+.admin-proj-btn{padding:6px 16px;background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+.admin-proj-btn:hover,.admin-proj-btn.on{background:rgba(201,168,76,0.15);border-color:var(--gold);}
+.edit-card-btn{display:none;position:absolute;bottom:14px;right:14px;padding:5px 13px;background:rgba(201,168,76,0.15);color:#c9a84c;border:1px solid rgba(201,168,76,0.3);border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;}
+.edit-card-btn:hover{background:rgba(201,168,76,0.28);}
+.admin-proj-mode .proj-card{position:relative;}
+.admin-proj-mode .edit-card-btn{display:block;}
+
 </style>
 </head>
 <body>
@@ -149,7 +159,8 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
       <button class="tab" onclick="filterTab(this,'드론측량')">드론측량</button>
       <button class="tab" onclick="filterTab(this,'기타')">기타</button>
     </div>
-    <button class="add-btn" onclick="openAddModal()">＋ 프로젝트 등록</button>
+    <button class="admin-proj-btn" id="proj-admin-btn" onclick="toggleProjAdmin()">🔐 관리자</button>
+    <button class="add-btn" id="add-proj-btn" onclick="openAddModal()" style="display:none;">＋ 프로젝트 등록</button>
   </div>
 
   <div class="proj-grid" id="proj-grid">
@@ -446,6 +457,7 @@ function renderGrid() {
     var card = document.createElement('div');
     card.className = 'proj-card';
     card.onclick = function(){ openDetail(proj.id); };
+    card.dataset.pid = proj.id;
 
     // 썸네일
     var thumb = document.createElement('div');
@@ -581,7 +593,167 @@ function setupDrop(areaId, handler) {
 }
 setupDrop('img-drop', addImages);
 setupDrop('doc-drop', addDocs);
+
+/* ── 관리자 모드 ── */
+var projAdmin = false;
+
+function toggleProjAdmin(){
+  if(projAdmin){
+    projAdmin=false;
+    document.getElementById('proj-grid').classList.remove('admin-proj-mode');
+    document.getElementById('proj-admin-btn').classList.remove('on');
+    document.getElementById('proj-admin-btn').textContent='🔐 관리자';
+    document.getElementById('add-proj-btn').style.display='none';
+    return;
+  }
+  document.getElementById('proj-pw').value='';
+  document.getElementById('proj-pw-err').textContent='';
+  document.getElementById('pw-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(function(){ document.getElementById('proj-pw').focus(); },100);
+}
+
+function checkProjAdmin(){
+  var input=document.getElementById('proj-pw').value;
+  var err=document.getElementById('proj-pw-err');
+  if(!input||input.length<4){ err.textContent='4자리 이상 입력해 주세요.'; return; }
+  var saved=localStorage.getItem('su_proj_pw');
+  if(!saved){ localStorage.setItem('su_proj_pw',input); closeModal('pw-overlay'); activateProjAdmin(); alert('✅ 관리자 비밀번호 설정 완료!'); }
+  else if(input===saved){ closeModal('pw-overlay'); activateProjAdmin(); }
+  else{ err.textContent='비밀번호가 틀렸습니다.'; document.getElementById('proj-pw').value=''; }
+}
+
+function activateProjAdmin(){
+  projAdmin=true;
+  document.getElementById('proj-grid').classList.add('admin-proj-mode');
+  document.getElementById('proj-admin-btn').classList.add('on');
+  document.getElementById('proj-admin-btn').textContent='🔓 관리자 ON';
+  document.getElementById('add-proj-btn').style.display='flex';
+  renderGrid();
+}
+
+/* ── 수정 버튼 카드에 추가 ── */
+var _origRenderGrid = renderGrid;
+renderGrid = function(){
+  _origRenderGrid();
+  if(!projAdmin) return;
+  var cards = document.querySelectorAll('.proj-card');
+  cards.forEach(function(card){
+    if(card.querySelector('.edit-card-btn')) return;
+    var btn=document.createElement('button');
+    btn.className='edit-card-btn'; btn.textContent='✏️ 수정';
+    var pid = card.dataset.pid;
+    btn.onclick=function(e){ e.stopPropagation(); openEditModal(parseInt(pid)); };
+    card.appendChild(btn);
+  });
+};
+
+/* ── 수정 모달 ── */
+function openEditModal(id){
+  var proj=allProjects.find(function(p){ return p.id===id; });
+  if(!proj) return;
+  document.getElementById('edit-id').value   = id;
+  document.getElementById('e-title').value   = proj.title||'';
+  document.getElementById('e-cat').value     = proj.cat||'';
+  document.getElementById('e-loc').value     = proj.loc||'';
+  document.getElementById('e-date').value    = proj.date||'';
+  document.getElementById('e-desc').value    = proj.desc||'';
+  document.getElementById('edit-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function saveEdit(){
+  var id    = parseInt(document.getElementById('edit-id').value);
+  var title = document.getElementById('e-title').value.trim();
+  var cat   = document.getElementById('e-cat').value;
+  var loc   = document.getElementById('e-loc').value.trim();
+  var date  = document.getElementById('e-date').value;
+  var desc  = document.getElementById('e-desc').value.trim();
+  if(!title){ alert('프로젝트명을 입력해 주세요.'); return; }
+  if(!cat)  { alert('업무 분야를 선택해 주세요.'); return; }
+
+  var proj=allProjects.find(function(p){ return p.id===id; });
+  if(!proj){ alert('프로젝트를 찾을 수 없습니다.'); return; }
+  proj.title=title; proj.cat=cat; proj.loc=loc; proj.date=date; proj.desc=desc;
+
+  dbAdd = dbAdd; // keep ref
+  // IndexedDB update
+  var tx=db.transaction('projects','readwrite');
+  var req=tx.objectStore('projects').put(proj);
+  req.onsuccess=function(){
+    closeModal('edit-overlay');
+    loadAll();
+    alert('✅ 수정이 저장되었습니다!');
+  };
+  req.onerror=function(){ alert('저장 오류'); };
+}
+
 </script>
+
+
+<!-- 수정 모달 -->
+<div class="overlay" id="edit-overlay" onclick="bgClick(event,'edit-overlay')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('edit-overlay')">✕</button>
+    <h3>프로젝트 수정</h3>
+    <input type="hidden" id="edit-id">
+    <div class="form-row">
+      <div class="form-group">
+        <label>프로젝트명 *</label>
+        <input type="text" id="e-title" placeholder="프로젝트명">
+      </div>
+      <div class="form-group">
+        <label>업무 분야 *</label>
+        <select id="e-cat">
+          <option value="">선택해주세요</option>
+          <option>지형측량 · 경사도 분석</option>
+          <option>건축물 부지조성 설계</option>
+          <option>개발행위 · 농지·산지전용</option>
+          <option>태양광 발전 부지조성</option>
+          <option>개간사업 · 우량농지 조성</option>
+          <option>드론측량</option>
+          <option>기타</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>위치</label>
+        <input type="text" id="e-loc" placeholder="예) 전북 무주군">
+      </div>
+      <div class="form-group">
+        <label>완료일</label>
+        <input type="date" id="e-date">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>프로젝트 설명</label>
+      <textarea id="e-desc" style="height:100px;resize:vertical;" placeholder="내용 입력"></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('edit-overlay')">취소</button>
+      <button class="btn-save" onclick="saveEdit()">수정 저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 관리자 비밀번호 모달 -->
+<div class="overlay" id="pw-overlay" onclick="bgClick(event,'pw-overlay')">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:360px;text-align:center;">
+    <button class="modal-close" onclick="closeModal('pw-overlay')">✕</button>
+    <h3>🔐 관리자 로그인</h3>
+    <p style="font-size:13px;color:#94a3b8;margin-bottom:20px;">처음 입력하는 번호가 비밀번호로 설정됩니다.</p>
+    <div class="form-group">
+      <input type="password" id="proj-pw" placeholder="비밀번호" style="text-align:center;letter-spacing:4px;font-family:monospace;"
+        onkeydown="if(event.key==='Enter')checkProjAdmin()">
+    </div>
+    <p id="proj-pw-err" style="font-size:12px;color:#f87171;min-height:16px;margin-bottom:12px;"></p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('pw-overlay')">취소</button>
+      <button class="btn-save" onclick="checkProjAdmin()">확인</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
