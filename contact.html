@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문의하기 | 수토목측량설계사무소</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a1628;--navy2:#0f2040;--gold:#c9a84c;--gold-light:#e8c96a;--white:#f8f7f3;--gray:#94a3b8;--line:rgba(201,168,76,0.25);}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--navy2);color:var(--white);overflow-x:hidden;}
+::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--navy);}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 60px;height:70px;background:rgba(10,22,40,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);}
+.nav-logo{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:700;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo .emblem{width:34px;height:34px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--gold);}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{font-size:13px;font-weight:500;color:rgba(248,247,243,0.7);text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+.nav-cta{padding:9px 22px;background:var(--gold);color:var(--navy);font-size:13px;font-weight:700;border-radius:4px;text-decoration:none;}
+.nav-cta:hover{background:var(--gold-light);}
+.page{padding:110px 60px 80px;max-width:1200px;margin:0 auto;}
+.sec-label{font-size:12px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:10px;}
+.sec-title{font-family:'Noto Serif KR',serif;font-size:36px;font-weight:700;color:var(--white);margin-bottom:48px;}
+.contact-wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:start;}
+.contact-info{display:flex;flex-direction:column;gap:22px;}
+.contact-item{display:flex;gap:16px;align-items:flex-start;}
+.c-icon{width:44px;height:44px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.c-text h4{font-size:11px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-weight:600;}
+.c-text p{font-size:15px;color:var(--white);font-weight:500;}
+.c-text span{font-size:13px;color:var(--gray);}
+.c-text a{color:var(--white);text-decoration:none;}
+.form-box{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);border-radius:16px;padding:36px;}
+.form-box h3{font-family:'Noto Serif KR',serif;font-size:20px;color:var(--white);margin-bottom:24px;font-weight:700;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:12px;color:var(--gold);letter-spacing:0.5px;margin-bottom:6px;font-weight:500;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px 14px;color:#ffffff;font-family:'Noto Sans KR',sans-serif;font-size:14px;outline:none;transition:border 0.2s;}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,0.35);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);}
+.form-group select option{background:#0f2040;color:#ffffff;}
+.form-group textarea{height:120px;resize:vertical;}
+.vis-row{display:flex;gap:20px;margin-bottom:16px;}
+.vis-label{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--white);}
+.vis-label input{accent-color:var(--gold);width:16px;height:16px;cursor:pointer;}
+.vis-note{font-size:11px;color:var(--gray);}
+.submit-btn{width:100%;padding:14px;background:var(--gold);color:var(--navy);font-weight:700;font-size:15px;border:none;border-radius:8px;cursor:pointer;font-family:inherit;transition:background 0.2s;}
+.submit-btn:hover{background:var(--gold-light);}
+.board{margin-top:40px;}
+.board-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(201,168,76,0.2);}
+.board-title{font-size:14px;color:#c9a84c;font-weight:600;}
+.board-count{font-size:12px;color:#94a3b8;}
+.board-empty{text-align:center;padding:28px;color:#94a3b8;font-size:13px;border:1px dashed rgba(255,255,255,0.1);border-radius:8px;}
+.post-card{border-radius:10px;padding:16px 18px;margin-bottom:10px;}
+.post-card.pub{background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.35);}
+.post-card.prv{background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.12);}
+.post-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.post-left{display:flex;align-items:center;gap:8px;}
+.post-name{font-size:13px;color:#f8f7f3;font-weight:600;}
+.post-cat{font-size:11px;background:rgba(201,168,76,0.15);color:#c9a84c;border:1px solid rgba(201,168,76,0.3);padding:2px 9px;border-radius:20px;}
+.post-date{font-size:11px;color:#94a3b8;}
+.post-body{font-size:13px;line-height:1.7;word-break:break-all;margin:0;}
+.post-body.pub{color:rgba(248,247,243,0.9);}
+.post-body.prv{color:#94a3b8;}
+.post-tel{margin-top:6px;font-size:11px;color:#94a3b8;}
+footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px;display:flex;align-items:center;justify-content:space-between;}
+.footer-logo{font-family:'Noto Serif KR',serif;font-size:15px;color:var(--white);font-weight:700;}
+.footer-copy{font-size:12px;color:var(--gray);}
+@media(max-width:900px){nav{padding:0 20px;}.nav-links{display:none;}.page{padding:90px 20px 60px;}.contact-wrap{grid-template-columns:1fr;}footer{flex-direction:column;gap:12px;text-align:center;padding:30px 20px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="emblem">樹</div>수토목측량설계사무소</a>
+  <ul class="nav-links">
+    <li><a href="index.html">홈</a></li>
+    <li><a href="about.html">회사소개</a></li>
+    <li><a href="services.html">업무분야</a></li>
+    <li><a href="portfolio.html">실적사례</a></li>
+    <li><a href="projects.html">프로젝트</a></li>
+    <li><a href="legal.html">법령검토</a></li>
+    <li><a href="contact.html" class="active">문의하기</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">상담 신청</a>
+</nav>
+
+<div class="page">
+  <div class="sec-label">Contact</div>
+  <h2 class="sec-title">문의하기</h2>
+
+  <div class="contact-wrap">
+
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="c-icon">📍</div>
+        <div class="c-text">
+          <h4>주소</h4>
+          <p>전북특별자치도 무주군 무주읍</p>
+          <span>당산강변로 234, 1층 103호 (리버뷰)</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="c-icon">📱</div>
+        <div class="c-text">
+          <h4>휴대폰 (빠른 문의)</h4>
+          <p>010-3524-0275</p>
+          <span>문자 문의도 가능합니다</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="c-icon">📞</div>
+        <div class="c-text">
+          <h4>사무실</h4>
+          <p>063-780-7711</p>
+          <span>평일 09:00 ~ 18:00</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="c-icon">📠</div>
+        <div class="c-text">
+          <h4>팩스</h4>
+          <p>070-754-7802</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="c-icon">✉️</div>
+        <div class="c-text">
+          <h4>이메일</h4>
+          <p><a href="mailto:halo1004-2@hanmail.net">halo1004-2@hanmail.net</a></p>
+          <span>24시간 접수 가능</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="form-box">
+        <h3>온라인 상담 신청</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>성함</label>
+            <input type="text" id="f-name" placeholder="홍길동">
+          </div>
+          <div class="form-group">
+            <label>연락처</label>
+            <input type="tel" id="f-tel" placeholder="010-0000-0000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>업무 분야</label>
+          <select id="f-cat">
+            <option value="">선택해주세요</option>
+            <option>지형측량 · 경사도 분석</option>
+            <option>건축물 부지조성 설계</option>
+            <option>개발행위 · 농지·산지전용</option>
+            <option>태양광 발전 부지조성</option>
+            <option>개간사업 · 우량농지 조성</option>
+            <option>드론측량</option>
+            <option>기타</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>문의 내용</label>
+          <textarea id="f-msg" placeholder="문의하실 내용을 입력해 주세요."></textarea>
+        </div>
+        <div class="vis-row">
+          <label class="vis-label">
+            <input type="radio" name="vis" value="public" checked> 🌐 공개글
+          </label>
+          <label class="vis-label">
+            <input type="radio" name="vis" value="private"> 🔒 비공개글 <span class="vis-note">(관리자만 확인)</span>
+          </label>
+        </div>
+        <button class="submit-btn" onclick="doSubmit()">문의 접수하기 →</button>
+      </div>
+
+      <div class="board">
+        <div class="board-header">
+          <span class="board-title">접수된 문의</span>
+          <span class="board-count" id="cnt">0건</span>
+        </div>
+        <div id="board-body">
+          <div class="board-empty" id="empty-msg">아직 접수된 문의가 없습니다.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">수토목측량설계사무소</div>
+  <div class="footer-copy">© 2025 수토목측량설계사무소. All rights reserved.</div>
+</footer>
+
+<script>
+var posts = [];
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function doSubmit(){
+  var name = document.getElementById('f-name').value.trim();
+  var tel  = document.getElementById('f-tel').value.trim();
+  var cat  = document.getElementById('f-cat').value;
+  var msg  = document.getElementById('f-msg').value.trim();
+  var radios = document.getElementsByName('vis');
+  var vis = 'public';
+  for(var i=0;i<radios.length;i++){ if(radios[i].checked){ vis=radios[i].value; break; } }
+
+  if(!name){ alert('성함을 입력해 주세요.'); return; }
+  if(!tel){  alert('연락처를 입력해 주세요.'); return; }
+  if(!cat){  alert('업무 분야를 선택해 주세요.'); return; }
+  if(!msg){  alert('문의 내용을 입력해 주세요.'); return; }
+
+  var now = new Date();
+  var date = now.getFullYear()+'.'+pad(now.getMonth()+1)+'.'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+
+  posts.unshift({name:name,tel:tel,cat:cat,msg:msg,vis:vis,date:date});
+
+  document.getElementById('f-name').value='';
+  document.getElementById('f-tel').value='';
+  document.getElementById('f-cat').value='';
+  document.getElementById('f-msg').value='';
+  document.getElementsByName('vis')[0].checked=true;
+
+  render();
+  alert('문의가 접수되었습니다.\n빠른 시일 내에 연락드리겠습니다.');
+}
+
+function render(){
+  var body  = document.getElementById('board-body');
+  var empty = document.getElementById('empty-msg');
+  var cnt   = document.getElementById('cnt');
+
+  cnt.textContent = posts.length+'건';
+
+  var old = body.getElementsByClassName('post-card');
+  while(old.length > 0){ old[0].parentNode.removeChild(old[0]); }
+
+  if(posts.length===0){ empty.style.display='block'; return; }
+  empty.style.display='none';
+
+  for(var i=0;i<posts.length;i++){
+    var p=posts[i];
+    var priv=(p.vis==='private');
+
+    var card=document.createElement('div');
+    card.className='post-card '+(priv?'prv':'pub');
+
+    var hdr=document.createElement('div'); hdr.className='post-hdr';
+    var left=document.createElement('div'); left.className='post-left';
+
+    var nm=document.createElement('span'); nm.className='post-name';
+    nm.textContent=priv?'🔒 비공개 문의':p.name;
+
+    var ct=document.createElement('span'); ct.className='post-cat';
+    ct.textContent=p.cat;
+
+    left.appendChild(nm); left.appendChild(ct);
+
+    var dt=document.createElement('span'); dt.className='post-date';
+    dt.textContent=p.date;
+
+    hdr.appendChild(left); hdr.appendChild(dt);
+
+    var bd=document.createElement('p');
+    bd.className='post-body '+(priv?'prv':'pub');
+    bd.textContent=priv?'🔒 비공개 글입니다. 관리자만 확인할 수 있습니다.':p.msg;
+
+    card.appendChild(hdr);
+    card.appendChild(bd);
+
+    if(!priv){
+      var tl=document.createElement('div'); tl.className='post-tel';
+      tl.textContent='연락처: '+p.tel;
+      card.appendChild(tl);
+    }
+
+    body.appendChild(card);
+  }
+}
+</script>
+</body>
+</html>
