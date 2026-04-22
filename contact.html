@@ -47,12 +47,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .vis-note{font-size:11px;color:var(--gray);}
 .submit-btn{width:100%;padding:14px;background:var(--gold);color:var(--navy);font-weight:700;font-size:15px;border:none;border-radius:8px;cursor:pointer;font-family:inherit;transition:background 0.2s;}
 .submit-btn:hover{background:var(--gold-light);}
+
+/* 게시판 */
 .board{margin-top:40px;}
 .board-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(201,168,76,0.2);}
 .board-title{font-size:14px;color:#c9a84c;font-weight:600;}
+.board-right{display:flex;align-items:center;gap:12px;}
 .board-count{font-size:12px;color:#94a3b8;}
+.admin-toggle{padding:5px 14px;background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:100px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+.admin-toggle:hover,.admin-toggle.on{background:rgba(201,168,76,0.15);border-color:var(--gold);}
 .board-empty{text-align:center;padding:28px;color:#94a3b8;font-size:13px;border:1px dashed rgba(255,255,255,0.1);border-radius:8px;}
-.post-card{border-radius:10px;padding:16px 18px;margin-bottom:10px;}
+.post-card{border-radius:10px;padding:16px 18px;margin-bottom:10px;position:relative;}
 .post-card.pub{background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.35);}
 .post-card.prv{background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.12);}
 .post-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
@@ -64,10 +69,30 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .post-body.pub{color:rgba(248,247,243,0.9);}
 .post-body.prv{color:#94a3b8;}
 .post-tel{margin-top:6px;font-size:11px;color:#94a3b8;}
+.del-btn{display:none;position:absolute;top:12px;right:12px;padding:4px 12px;background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;}
+.del-btn:hover{background:rgba(239,68,68,0.3);}
+.admin-mode .del-btn{display:block;}
+
+/* 관리자 로그인 모달 */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#0d1e35;border:1px solid rgba(201,168,76,0.3);border-radius:16px;padding:36px;width:100%;max-width:360px;text-align:center;}
+.modal-box h4{font-family:'Noto Serif KR',serif;font-size:18px;color:var(--white);margin-bottom:6px;}
+.modal-box p{font-size:13px;color:var(--gray);margin-bottom:22px;}
+.modal-box input{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px 14px;color:#fff;font-size:16px;text-align:center;letter-spacing:4px;outline:none;font-family:monospace;margin-bottom:12px;}
+.modal-box input:focus{border-color:var(--gold);}
+.modal-box input.shake{animation:shake 0.3s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.modal-btns{display:flex;gap:10px;}
+.modal-cancel{flex:1;padding:12px;background:rgba(255,255,255,0.07);color:var(--white);border:1px solid rgba(255,255,255,0.15);border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit;}
+.modal-ok{flex:2;padding:12px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+.modal-ok:hover{background:var(--gold-light);}
+.modal-err{font-size:12px;color:#f87171;min-height:16px;margin-bottom:10px;}
+
 footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px;display:flex;align-items:center;justify-content:space-between;}
 .footer-logo{font-family:'Noto Serif KR',serif;font-size:15px;color:var(--white);font-weight:700;}
 .footer-copy{font-size:12px;color:var(--gray);}
-@media(max-width:900px){nav{padding:0 20px;}.nav-links{display:none;}.page{padding:90px 20px 60px;}.contact-wrap{grid-template-columns:1fr;}footer{flex-direction:column;gap:12px;text-align:center;padding:30px 20px;}}
+@media(max-width:900px){nav{padding:0 20px;}.nav-links{display:none;}.page{padding:90px 20px 60px;}.contact-wrap{grid-template-columns:1fr;}.form-row{grid-template-columns:1fr;}footer{flex-direction:column;gap:12px;text-align:center;padding:30px 20px;}}
 </style>
 </head>
 <body>
@@ -91,7 +116,6 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
   <h2 class="sec-title">문의하기</h2>
 
   <div class="contact-wrap">
-
     <div class="contact-info">
       <div class="contact-item">
         <div class="c-icon">📍</div>
@@ -175,17 +199,20 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
         <button class="submit-btn" onclick="doSubmit()">문의 접수하기 →</button>
       </div>
 
-      <div class="board">
+      <!-- 게시판 -->
+      <div class="board" id="board-wrap">
         <div class="board-header">
           <span class="board-title">접수된 문의</span>
-          <span class="board-count" id="cnt">0건</span>
+          <div class="board-right">
+            <span class="board-count" id="cnt">0건</span>
+            <button class="admin-toggle" id="admin-toggle-btn" onclick="toggleAdmin()">🔐 관리자</button>
+          </div>
         </div>
         <div id="board-body">
           <div class="board-empty" id="empty-msg">아직 접수된 문의가 없습니다.</div>
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -194,12 +221,58 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
   <div class="footer-copy">© 2025 수토목측량설계사무소. All rights reserved.</div>
 </footer>
 
+<!-- 관리자 비밀번호 모달 -->
+<div class="modal-overlay" id="admin-modal" onclick="closeAdminModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <h4>🔐 관리자 로그인</h4>
+    <p>관리자 비밀번호를 입력하세요.<br><small style="color:#475569;">처음 입력하는 번호가 비밀번호로 설정됩니다.</small></p>
+    <input type="password" id="admin-pw" placeholder="••••" maxlength="20"
+      onkeydown="if(event.key==='Enter')checkAdmin()">
+    <div class="modal-err" id="admin-err"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeAdminModal()">취소</button>
+      <button class="modal-ok" onclick="checkAdmin()">확인</button>
+    </div>
+  </div>
+</div>
+
 <script>
-var posts = [];
+// ── IndexedDB ──
+var DB, isAdmin = false;
+var DB_NAME = 'SuContact', STORE = 'posts';
+
+function initDB(cb) {
+  var req = indexedDB.open(DB_NAME, 1);
+  req.onupgradeneeded = function(e) {
+    e.target.result.createObjectStore(STORE, { keyPath:'id', autoIncrement:true });
+  };
+  req.onsuccess = function(e) { DB = e.target.result; cb(); };
+  req.onerror   = function() { console.error('DB 초기화 실패'); };
+}
+
+function dbAdd(obj, cb) {
+  var tx = DB.transaction(STORE,'readwrite');
+  tx.objectStore(STORE).add(obj).onsuccess = function(){ cb && cb(); };
+}
+
+function dbGetAll(cb) {
+  var tx = DB.transaction(STORE,'readonly');
+  var req = tx.objectStore(STORE).getAll();
+  req.onsuccess = function(){ cb(req.result || []); };
+}
+
+function dbDelete(id, cb) {
+  var tx = DB.transaction(STORE,'readwrite');
+  tx.objectStore(STORE).delete(id).onsuccess = function(){ cb && cb(); };
+}
+
+// ── 초기화 ──
+initDB(function(){ loadAndRender(); });
 
 function pad(n){ return String(n).padStart(2,'0'); }
 
-function doSubmit(){
+// ── 문의 접수 ──
+function doSubmit() {
   var name = document.getElementById('f-name').value.trim();
   var tel  = document.getElementById('f-tel').value.trim();
   var cat  = document.getElementById('f-cat').value;
@@ -216,69 +289,151 @@ function doSubmit(){
   var now = new Date();
   var date = now.getFullYear()+'.'+pad(now.getMonth()+1)+'.'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
 
-  posts.unshift({name:name,tel:tel,cat:cat,msg:msg,vis:vis,date:date});
-
-  document.getElementById('f-name').value='';
-  document.getElementById('f-tel').value='';
-  document.getElementById('f-cat').value='';
-  document.getElementById('f-msg').value='';
-  document.getElementsByName('vis')[0].checked=true;
-
-  render();
-  alert('문의가 접수되었습니다.\n빠른 시일 내에 연락드리겠습니다.');
+  dbAdd({name:name,tel:tel,cat:cat,msg:msg,vis:vis,date:date}, function(){
+    document.getElementById('f-name').value='';
+    document.getElementById('f-tel').value='';
+    document.getElementById('f-cat').value='';
+    document.getElementById('f-msg').value='';
+    document.getElementsByName('vis')[0].checked=true;
+    loadAndRender();
+    alert('문의가 접수되었습니다.\n빠른 시일 내에 연락드리겠습니다.');
+  });
 }
 
-function render(){
+// ── 렌더 ──
+function loadAndRender() {
+  dbGetAll(function(rows) {
+    rows.reverse();
+    render(rows);
+  });
+}
+
+function render(rows) {
   var body  = document.getElementById('board-body');
   var empty = document.getElementById('empty-msg');
   var cnt   = document.getElementById('cnt');
 
-  cnt.textContent = posts.length+'건';
+  cnt.textContent = rows.length + '건';
 
-  var old = body.getElementsByClassName('post-card');
-  while(old.length > 0){ old[0].parentNode.removeChild(old[0]); }
+  // 기존 카드 제거
+  var cards = body.getElementsByClassName('post-card');
+  while(cards.length){ cards[0].remove(); }
 
-  if(posts.length===0){ empty.style.display='block'; return; }
-  empty.style.display='none';
+  if(rows.length === 0){ empty.style.display='block'; return; }
+  empty.style.display = 'none';
 
-  for(var i=0;i<posts.length;i++){
-    var p=posts[i];
-    var priv=(p.vis==='private');
+  rows.forEach(function(p) {
+    var priv = (p.vis === 'private');
+    var card = document.createElement('div');
+    card.className = 'post-card ' + (priv?'prv':'pub');
 
-    var card=document.createElement('div');
-    card.className='post-card '+(priv?'prv':'pub');
+    // 삭제 버튼 (관리자 모드 시 표시)
+    var delBtn = document.createElement('button');
+    delBtn.className = 'del-btn';
+    delBtn.textContent = '🗑️ 삭제';
+    (function(id){ delBtn.onclick = function(){ deletePost(id); }; })(p.id);
 
-    var hdr=document.createElement('div'); hdr.className='post-hdr';
-    var left=document.createElement('div'); left.className='post-left';
+    var hdr  = document.createElement('div'); hdr.className='post-hdr';
+    var left = document.createElement('div'); left.className='post-left';
 
-    var nm=document.createElement('span'); nm.className='post-name';
-    nm.textContent=priv?'🔒 비공개 문의':p.name;
+    var nm = document.createElement('span'); nm.className='post-name';
+    nm.textContent = priv ? '🔒 비공개 문의' : p.name;
 
-    var ct=document.createElement('span'); ct.className='post-cat';
-    ct.textContent=p.cat;
+    var ct = document.createElement('span'); ct.className='post-cat';
+    ct.textContent = p.cat;
 
     left.appendChild(nm); left.appendChild(ct);
 
-    var dt=document.createElement('span'); dt.className='post-date';
-    dt.textContent=p.date;
+    var dt = document.createElement('span'); dt.className='post-date';
+    dt.textContent = p.date;
 
     hdr.appendChild(left); hdr.appendChild(dt);
 
-    var bd=document.createElement('p');
-    bd.className='post-body '+(priv?'prv':'pub');
-    bd.textContent=priv?'🔒 비공개 글입니다. 관리자만 확인할 수 있습니다.':p.msg;
+    var bd = document.createElement('p');
+    bd.className = 'post-body ' + (priv?'prv':'pub');
+    bd.textContent = priv ? '🔒 비공개 글입니다. 관리자만 확인할 수 있습니다.' : p.msg;
 
+    card.appendChild(delBtn);
     card.appendChild(hdr);
     card.appendChild(bd);
 
     if(!priv){
-      var tl=document.createElement('div'); tl.className='post-tel';
-      tl.textContent='연락처: '+p.tel;
+      var tl = document.createElement('div'); tl.className='post-tel';
+      tl.textContent = '연락처: ' + p.tel;
       card.appendChild(tl);
     }
 
     body.appendChild(card);
+  });
+
+  // 관리자 모드 유지
+  if(isAdmin) document.getElementById('board-wrap').classList.add('admin-mode');
+}
+
+// ── 삭제 ──
+function deletePost(id) {
+  if(!confirm('이 문의를 삭제하시겠습니까?')) return;
+  dbDelete(id, function(){ loadAndRender(); });
+}
+
+// ── 관리자 모드 ──
+function toggleAdmin() {
+  if(isAdmin) {
+    // 로그아웃
+    isAdmin = false;
+    document.getElementById('board-wrap').classList.remove('admin-mode');
+    document.getElementById('admin-toggle-btn').classList.remove('on');
+    document.getElementById('admin-toggle-btn').textContent = '🔐 관리자';
+    return;
   }
+  // 로그인 모달 열기
+  document.getElementById('admin-pw').value = '';
+  document.getElementById('admin-err').textContent = '';
+  document.getElementById('admin-modal').classList.add('open');
+  setTimeout(function(){ document.getElementById('admin-pw').focus(); }, 100);
+}
+
+function closeAdminModal(e) {
+  if(e && e.target !== document.getElementById('admin-modal')) return;
+  document.getElementById('admin-modal').classList.remove('open');
+}
+
+function checkAdmin() {
+  var input = document.getElementById('admin-pw').value;
+  var errEl = document.getElementById('admin-err');
+  var inputEl = document.getElementById('admin-pw');
+
+  if(!input || input.length < 4) {
+    errEl.textContent = '4자리 이상 입력해 주세요.';
+    inputEl.classList.add('shake');
+    setTimeout(function(){ inputEl.classList.remove('shake'); }, 350);
+    return;
+  }
+
+  var saved = localStorage.getItem('su_admin_pw');
+
+  if(!saved) {
+    // 최초 설정
+    localStorage.setItem('su_admin_pw', input);
+    document.getElementById('admin-modal').classList.remove('open');
+    activateAdmin();
+    alert('✅ 관리자 비밀번호가 설정되었습니다!\n다음부터 이 비밀번호로 로그인하세요.');
+  } else if(input === saved) {
+    document.getElementById('admin-modal').classList.remove('open');
+    activateAdmin();
+  } else {
+    errEl.textContent = '비밀번호가 틀렸습니다.';
+    inputEl.value = '';
+    inputEl.classList.add('shake');
+    setTimeout(function(){ inputEl.classList.remove('shake'); errEl.textContent=''; }, 1500);
+  }
+}
+
+function activateAdmin() {
+  isAdmin = true;
+  document.getElementById('board-wrap').classList.add('admin-mode');
+  document.getElementById('admin-toggle-btn').classList.add('on');
+  document.getElementById('admin-toggle-btn').textContent = '🔓 관리자 모드 ON';
 }
 </script>
 </body>
