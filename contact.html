@@ -22,22 +22,23 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-cta:hover{background:var(--gold-light);}
 .page{padding:110px 60px 80px;max-width:1200px;margin:0 auto;}
 .sec-label{font-size:12px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:10px;}
-.sec-title{font-family:'Noto Serif KR',serif;font-size:36px;font-weight:700;color:var(--white);margin-bottom:48px;}
+.sec-title{font-family:'Noto Serif KR',serif;font-size:36px;font-weight:700;color:var(--white);margin-bottom:32px;}
 
-/* 설정 안내 배너 */
-.setup-banner{background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.3);border-radius:14px;padding:20px 24px;margin-bottom:32px;}
-.setup-banner h4{font-size:14px;color:var(--gold);font-weight:700;margin-bottom:10px;}
-.setup-banner p{font-size:13px;color:var(--gray);line-height:1.8;}
-.setup-banner code{background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:12px;color:#93c5fd;}
-.setup-banner a{color:var(--gold);}
-.setup-row{display:flex;gap:10px;margin-top:12px;}
-.setup-input{flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:9px 12px;color:#fff;font-size:13px;outline:none;font-family:monospace;}
-.setup-input:focus{border-color:var(--gold);}
-.setup-save{padding:9px 18px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;}
-.setup-save:hover{background:var(--gold-light);}
-.setup-status{font-size:12px;padding:3px 10px;border-radius:100px;display:inline-flex;align-items:center;gap:4px;}
+/* PC/모바일 연동 설정 배너 */
+.sync-banner{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.3);border-radius:14px;padding:22px 26px;margin-bottom:36px;}
+.sync-banner h4{font-size:14px;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.sync-banner p{font-size:13px;color:var(--gray);line-height:1.8;margin-bottom:14px;}
+.sync-banner code{background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:12px;color:#93c5fd;}
+.sync-banner a{color:var(--gold);}
+.sync-row{display:flex;gap:10px;align-items:center;}
+.sync-input{flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;outline:none;font-family:monospace;}
+.sync-input:focus{border-color:var(--gold);}
+.sync-btn{padding:10px 20px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;}
+.sync-btn:hover{background:var(--gold-light);}
+.sync-status{font-size:12px;padding:4px 12px;border-radius:100px;white-space:nowrap;}
 .s-ok{background:rgba(34,197,94,0.15);color:#4ade80;border:1px solid rgba(34,197,94,0.3);}
 .s-no{background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.25);}
+.s-local{background:rgba(148,163,184,0.15);color:#94a3b8;border:1px solid rgba(148,163,184,0.2);}
 
 .contact-wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:start;}
 .contact-info{display:flex;flex-direction:column;gap:22px;}
@@ -63,34 +64,32 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .vis-note{font-size:11px;color:var(--gray);}
 .submit-btn{width:100%;padding:14px;background:var(--gold);color:var(--navy);font-weight:700;font-size:15px;border:none;border-radius:8px;cursor:pointer;font-family:inherit;transition:background 0.2s;}
 .submit-btn:hover{background:var(--gold-light);}
+
+/* 게시판 */
 .board{margin-top:40px;}
 .board-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(201,168,76,0.2);}
 .board-title{font-size:14px;color:#c9a84c;font-weight:600;}
 .board-right{display:flex;align-items:center;gap:10px;}
 .board-count{font-size:12px;color:#94a3b8;}
-.admin-toggle{padding:5px 14px;background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:100px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;}
+.admin-toggle{padding:5px 14px;background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:100px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;}
 .admin-toggle.on{background:rgba(201,168,76,0.15);border-color:var(--gold);}
 .board-empty{text-align:center;padding:28px;color:#94a3b8;font-size:13px;border:1px dashed rgba(255,255,255,0.1);border-radius:8px;}
+.loading-row{text-align:center;padding:20px;color:var(--gray);font-size:13px;}
 .post-card{border-radius:10px;padding:16px 18px;margin-bottom:10px;position:relative;}
 .post-card.pub{background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.35);}
-.post-card.prv{background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.12);}
-.post-card.prv-hidden{display:none;}
+.post-card.prv{background:rgba(255,255,255,0.03);border:1px solid rgba(239,68,68,0.2);}
 .post-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .post-left{display:flex;align-items:center;gap:8px;}
 .post-name{font-size:13px;color:#f8f7f3;font-weight:600;}
 .post-cat{font-size:11px;background:rgba(201,168,76,0.15);color:#c9a84c;border:1px solid rgba(201,168,76,0.3);padding:2px 9px;border-radius:20px;}
 .post-date{font-size:11px;color:#94a3b8;}
-.post-body{font-size:13px;line-height:1.7;word-break:break-all;margin:0;}
-.post-body.pub{color:rgba(248,247,243,0.9);}
+.post-body{font-size:13px;line-height:1.7;word-break:break-all;margin:0;color:rgba(248,247,243,0.9);}
 .post-body.prv{color:#94a3b8;}
 .post-tel{margin-top:6px;font-size:11px;color:#94a3b8;}
-.del-post-btn{display:none;position:absolute;top:12px;right:12px;padding:4px 12px;background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.25);border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;}
+.del-post-btn{position:absolute;top:12px;right:12px;padding:4px 12px;background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.25);border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;}
 .del-post-btn:hover{background:rgba(239,68,68,0.25);}
-.admin-mode .del-post-btn{display:block;}
-.admin-mode .post-card.prv-hidden{display:block;}
-.loading-msg{text-align:center;padding:20px;color:var(--gray);font-size:13px;}
 
-/* 모달 */
+/* 관리자 모달 */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:300;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal-box{background:#0d1e35;border:1px solid rgba(201,168,76,0.3);border-radius:16px;padding:36px;width:100%;max-width:360px;text-align:center;}
@@ -114,6 +113,7 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
   .page{padding:90px 20px 60px;}
   .contact-wrap{grid-template-columns:1fr;}
   .form-row{grid-template-columns:1fr;}
+  .sync-row{flex-wrap:wrap;}
   footer{flex-direction:column;gap:12px;text-align:center;padding:30px 20px;}
 }
 </style>
@@ -138,28 +138,19 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
   <div class="sec-label">Contact</div>
   <h2 class="sec-title">문의하기</h2>
 
-  <!-- 초기 설정 안내 (설정 완료 후 자동 숨김) -->
-  <div class="setup-banner" id="setup-banner">
-    <h4>⚙️ 최초 1회 설정 — 모바일/PC 연동 및 알림</h4>
+  <!-- PC/모바일 연동 설정 -->
+  <div class="sync-banner" id="sync-banner">
+    <h4>📡 PC ↔ 모바일 연동 설정 (최초 1회)</h4>
     <p>
-      문의 내용을 모든 기기에서 공유하고, 새 문의 시 카카오톡 알림을 받으려면 아래를 설정하세요.<br><br>
-      <strong style="color:var(--white);">① JSONBin (데이터 저장 — 무료)</strong><br>
-      <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> 회원가입 → 대시보드 → <code>API KEYS</code> → Master Key 복사<br><br>
+      PC와 모바일에서 문의 내용을 함께 확인하려면 <strong style="color:var(--white);">JSONBin</strong> 무료 서비스를 연결하세요.<br>
+      <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> 접속 → 무료 회원가입 → 대시보드 → <code>API KEYS</code> 탭 → <code>Master Key</code> 복사 후 아래에 붙여넣기
     </p>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px;">
-      <div>
-        <div style="font-size:11px;color:var(--gold);margin-bottom:6px;font-weight:600;">JSONBin Master Key</div>
-        <div class="setup-row">
-          <input class="setup-input" id="jsonbin-key" placeholder="$2a$10$..." autocomplete="off">
-          <span class="setup-status s-no" id="jb-status">미설정</span>
-          <button class="setup-save" onclick="saveSettings()">저장</button>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:11px;color:var(--gold);margin-bottom:6px;font-weight:600;">JSONBin Bin ID (저장 후 자동 생성)</div>
-        <div style="font-size:12px;color:var(--gray);" id="bin-id-display">— Master Key 저장 시 자동 생성됩니다</div>
-      </div>
+    <div class="sync-row">
+      <input class="sync-input" id="jb-key-input" type="password" placeholder="$2a$10$... (JSONBin Master Key)" autocomplete="off">
+      <span class="sync-status s-no" id="sync-status">미연결</span>
+      <button class="sync-btn" onclick="saveJBKey()">연결</button>
     </div>
+    <div style="font-size:12px;color:#475569;margin-top:8px;" id="bin-id-info"></div>
   </div>
 
   <div class="contact-wrap">
@@ -243,7 +234,7 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
             <input type="radio" name="vis" value="private"> 🔒 비공개글 <span class="vis-note">(관리자만 확인)</span>
           </label>
         </div>
-        <button class="submit-btn" onclick="doSubmit()">문의 접수하기 →</button>
+        <button class="submit-btn" id="submit-btn" onclick="doSubmit()">문의 접수하기 →</button>
       </div>
 
       <div class="board" id="board-wrap">
@@ -255,7 +246,7 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
           </div>
         </div>
         <div id="board-body">
-          <div class="loading-msg">불러오는 중...</div>
+          <div class="loading-row">불러오는 중...</div>
         </div>
       </div>
     </div>
@@ -276,7 +267,7 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
       onkeydown="if(event.key==='Enter')checkAdmin()">
     <div class="modal-err" id="admin-err"></div>
     <div class="modal-btns">
-      <button class="m-cancel" onclick="closeModal('admin-modal')">취소</button>
+      <button class="m-cancel" onclick="closeAdminModal()">취소</button>
       <button class="m-ok" onclick="checkAdmin()">확인</button>
     </div>
   </div>
@@ -286,281 +277,325 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
 var isAdmin = false;
 var posts   = [];
 
-/* ── 설정 관리 ── */
-function getCfg(k){ return localStorage.getItem(k)||''; }
-function setCfg(k,v){ localStorage.setItem(k,v); }
+/* ── 설정값 ── */
+function cfg(k)    { return localStorage.getItem(k) || ''; }
+function setCfg(k,v){ localStorage.setItem(k, v); }
 
-function updateSetupUI(){
-  var jk = getCfg('jb_key');
-  var bi = getCfg('jb_bin');
-  var st = document.getElementById('jb-status');
-  if(jk){ st.textContent='✓ 설정됨'; st.className='setup-status s-ok'; }
-  else  { st.textContent='미설정';   st.className='setup-status s-no';  }
-  if(bi) document.getElementById('bin-id-display').textContent = 'Bin ID: '+bi;
-  // 둘다 설정되면 배너 접기
-  if(jk && bi) document.getElementById('setup-banner').style.display='none';
-  // 입력창에 기존 값
-  if(jk) document.getElementById('jsonbin-key').value = jk;
+/* ── 연동 상태 UI 업데이트 ── */
+function updateSyncUI() {
+  var key = cfg('jb_key');
+  var bin = cfg('jb_bin');
+  var st  = document.getElementById('sync-status');
+  var banner = document.getElementById('sync-banner');
+  var binInfo = document.getElementById('bin-id-info');
+
+  if (key && bin) {
+    st.textContent = '✓ 연결됨';
+    st.className = 'sync-status s-ok';
+    binInfo.textContent = 'Bin ID: ' + bin + ' · 모든 기기에서 문의가 공유됩니다.';
+    banner.style.display = 'none'; // 설정 완료 후 배너 숨김
+  } else if (key) {
+    st.textContent = '연결 중...';
+    st.className = 'sync-status s-local';
+  } else {
+    st.textContent = '미연결';
+    st.className = 'sync-status s-no';
+    binInfo.textContent = '※ 미연결 시 이 기기에만 저장됩니다.';
+  }
+
+  if (key) document.getElementById('jb-key-input').placeholder = key.slice(0,12) + '••••••••';
 }
 
-async function saveSettings(){
-  var key = document.getElementById('jsonbin-key').value.trim();
-  if(!key){ alert('JSONBin Master Key를 입력해 주세요.'); return; }
-  setCfg('jb_key', key);
+/* ── JSONBin 키 저장 및 Bin 생성 ── */
+async function saveJBKey() {
+  var key = document.getElementById('jb-key-input').value.trim();
+  if (!key) { alert('JSONBin Master Key를 입력해 주세요.'); return; }
 
-  // Bin 없으면 새로 생성
-  var bin = getCfg('jb_bin');
-  if(!bin){
-    try{
-      var r = await fetch('https://api.jsonbin.io/v3/b',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','X-Master-Key':key,'X-Bin-Name':'su-contact'},
-        body: JSON.stringify({posts:[]})
+  var btn = document.querySelector('.sync-btn');
+  btn.textContent = '연결 중...'; btn.disabled = true;
+
+  setCfg('jb_key', key);
+  var bin = cfg('jb_bin');
+
+  if (!bin) {
+    // 새 Bin 생성
+    try {
+      var r = await fetch('https://api.jsonbin.io/v3/b', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': key, 'X-Bin-Name': 'su-contact-posts' },
+        body: JSON.stringify({ posts: [] })
       });
       var d = await r.json();
-      bin = d.metadata && d.metadata.id ? d.metadata.id : '';
-      if(bin){ setCfg('jb_bin', bin); alert('✅ 설정 완료!\nBin ID: '+bin+'\n이제 모든 기기에서 문의가 공유됩니다.'); }
-      else    { alert('Bin 생성 실패. API Key를 확인해 주세요.\n응답: '+JSON.stringify(d)); }
-    }catch(e){ alert('오류: '+e.message); return; }
+      if (d.metadata && d.metadata.id) {
+        setCfg('jb_bin', d.metadata.id);
+        alert('✅ 연결 완료!\n이제 PC와 모바일에서 문의가 공유됩니다.');
+      } else {
+        alert('연결 실패. Master Key를 다시 확인해 주세요.\n' + JSON.stringify(d));
+        btn.textContent = '연결'; btn.disabled = false; return;
+      }
+    } catch(e) {
+      alert('오류: ' + e.message);
+      btn.textContent = '연결'; btn.disabled = false; return;
+    }
   } else {
-    alert('✅ JSONBin Key가 저장되었습니다.');
+    alert('✅ JSONBin Key가 업데이트되었습니다.');
   }
-  updateSetupUI();
+
+  btn.textContent = '연결'; btn.disabled = false;
+  updateSyncUI();
   loadPosts();
 }
 
-
-/* ── JSONBin CRUD ── */
-async function jbGet(){
-  var key=getCfg('jb_key'), bin=getCfg('jb_bin');
-  if(!key||!bin) return null;
-  var r = await fetch('https://api.jsonbin.io/v3/b/'+bin+'/latest',{
-    headers:{'X-Master-Key':key,'X-Bin-Meta':'false'}
-  });
-  if(!r.ok) return null;
-  var d = await r.json();
-  return d.posts||[];
+/* ── JSONBin API ── */
+async function jbGetPosts() {
+  var key = cfg('jb_key'), bin = cfg('jb_bin');
+  if (!key || !bin) return null;
+  try {
+    var r = await fetch('https://api.jsonbin.io/v3/b/' + bin + '/latest', {
+      headers: { 'X-Master-Key': key, 'X-Bin-Meta': 'false' }
+    });
+    if (!r.ok) return null;
+    var d = await r.json();
+    return Array.isArray(d.posts) ? d.posts : [];
+  } catch(e) { return null; }
 }
 
-async function jbSave(arr){
-  var key=getCfg('jb_key'), bin=getCfg('jb_bin');
-  if(!key||!bin) return false;
-  var r = await fetch('https://api.jsonbin.io/v3/b/'+bin,{
-    method:'PUT',
-    headers:{'Content-Type':'application/json','X-Master-Key':key},
-    body: JSON.stringify({posts:arr})
-  });
-  return r.ok;
+async function jbSavePosts(arr) {
+  var key = cfg('jb_key'), bin = cfg('jb_bin');
+  if (!key || !bin) return false;
+  try {
+    var r = await fetch('https://api.jsonbin.io/v3/b/' + bin, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': key },
+      body: JSON.stringify({ posts: arr })
+    });
+    return r.ok;
+  } catch(e) { return false; }
 }
 
+/* ── IndexedDB (JSONBin 미연결 시 로컬 저장) ── */
+var localDB = null;
+
+function getLocalDB(cb) {
+  if (localDB) { cb(localDB); return; }
+  var req = indexedDB.open('SuContactLocal', 1);
+  req.onupgradeneeded = function(e) {
+    e.target.result.createObjectStore('posts', { keyPath: 'id', autoIncrement: true });
+  };
+  req.onsuccess = function(e) { localDB = e.target.result; cb(localDB); };
+}
+
+function localGetAll(cb) {
+  getLocalDB(function(db) {
+    db.transaction('posts','readonly').objectStore('posts').getAll().onsuccess = function(e) {
+      cb((e.target.result || []).reverse());
+    };
+  });
+}
+function localAdd(obj, cb) {
+  getLocalDB(function(db) {
+    db.transaction('posts','readwrite').objectStore('posts').add(obj).onsuccess = function() { cb && cb(); };
+  });
+}
+function localDel(id, cb) {
+  getLocalDB(function(db) {
+    db.transaction('posts','readwrite').objectStore('posts').delete(id).onsuccess = function() { cb && cb(); };
+  });
 }
 
 /* ── 문의 불러오기 ── */
-async function loadPosts(){
-  var body = document.getElementById('board-body');
-  var key=getCfg('jb_key'), bin=getCfg('jb_bin');
-  if(!key||!bin){
-    // 로컬 IndexedDB fallback
-    loadLocalPosts(); return;
+async function loadPosts() {
+  document.getElementById('board-body').innerHTML = '<div class="loading-row">불러오는 중...</div>';
+  var remote = await jbGetPosts();
+  if (remote !== null) {
+    posts = remote;
+  } else {
+    await new Promise(function(res) { localGetAll(function(arr) { posts = arr; res(); }); });
   }
-  body.innerHTML='<div class="loading-msg">불러오는 중...</div>';
-  var arr = await jbGet();
-  if(arr===null){ loadLocalPosts(); return; }
-  posts = arr;
   renderPosts();
 }
 
-/* ── IndexedDB fallback (JSONBin 미설정 시) ── */
-var localDB;
-function initLocalDB(cb){
-  if(localDB){ cb(); return; }
-  var req=indexedDB.open('SuContact',1);
-  req.onupgradeneeded=function(e){ e.target.result.createObjectStore('posts',{keyPath:'id',autoIncrement:true}); };
-  req.onsuccess=function(e){ localDB=e.target.result; cb(); };
-}
-function loadLocalPosts(){
-  initLocalDB(function(){
-    var tx=localDB.transaction('posts','readonly');
-    var req=tx.objectStore('posts').getAll();
-    req.onsuccess=function(){ posts=(req.result||[]).reverse(); renderPosts(); };
-  });
-}
-function localAdd(obj,cb){
-  initLocalDB(function(){
-    var tx=localDB.transaction('posts','readwrite');
-    tx.objectStore('posts').add(obj).onsuccess=function(){ cb&&cb(); };
-  });
-}
-function localDel(id,cb){
-  initLocalDB(function(){
-    var tx=localDB.transaction('posts','readwrite');
-    tx.objectStore('posts').delete(id).onsuccess=function(){ cb&&cb(); };
-  });
-}
-
 /* ── 문의 접수 ── */
-function pad(n){ return String(n).padStart(2,'0'); }
+function pad(n) { return String(n).padStart(2,'0'); }
 
-async function doSubmit(){
-  var name=document.getElementById('f-name').value.trim();
-  var tel =document.getElementById('f-tel').value.trim();
-  var cat =document.getElementById('f-cat').value;
-  var msg =document.getElementById('f-msg').value.trim();
-  var radios=document.getElementsByName('vis'); var vis='public';
-  for(var i=0;i<radios.length;i++) if(radios[i].checked){ vis=radios[i].value; break; }
+async function doSubmit() {
+  var name = document.getElementById('f-name').value.trim();
+  var tel  = document.getElementById('f-tel').value.trim();
+  var cat  = document.getElementById('f-cat').value;
+  var msg  = document.getElementById('f-msg').value.trim();
+  var radios = document.getElementsByName('vis'); var vis = 'public';
+  for (var i=0; i<radios.length; i++) if (radios[i].checked) { vis = radios[i].value; break; }
 
-  if(!name){ alert('성함을 입력해 주세요.'); return; }
-  if(!tel){  alert('연락처를 입력해 주세요.'); return; }
-  if(!cat){  alert('업무 분야를 선택해 주세요.'); return; }
-  if(!msg){  alert('문의 내용을 입력해 주세요.'); return; }
+  if (!name) { alert('성함을 입력해 주세요.'); return; }
+  if (!tel)  { alert('연락처를 입력해 주세요.'); return; }
+  if (!cat)  { alert('업무 분야를 선택해 주세요.'); return; }
+  if (!msg)  { alert('문의 내용을 입력해 주세요.'); return; }
 
-  var now=new Date();
-  var date=now.getFullYear()+'.'+pad(now.getMonth()+1)+'.'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
-  var newPost={id:Date.now(),name:name,tel:tel,cat:cat,msg:msg,vis:vis,date:date};
+  var now = new Date();
+  var date = now.getFullYear()+'.'+pad(now.getMonth()+1)+'.'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+  var newPost = { id: Date.now(), name:name, tel:tel, cat:cat, msg:msg, vis:vis, date:date };
 
-  var btn=document.querySelector('.submit-btn');
-  btn.disabled=true; btn.textContent='접수 중...';
+  var btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = '접수 중...';
 
-  var key=getCfg('jb_key'), bin=getCfg('jb_bin');
-  if(key&&bin){
-    var arr=await jbGet()||[];
+  if (cfg('jb_key') && cfg('jb_bin')) {
+    // 원격 저장
+    var arr = (await jbGetPosts()) || [];
     arr.unshift(newPost);
-    var ok=await jbSave(arr);
-    if(ok){ posts=arr; }
+    await jbSavePosts(arr);
+    posts = arr;
   } else {
     // 로컬 저장
-    await new Promise(function(res){ localAdd(newPost, res); });
+    await new Promise(function(res) { localAdd(newPost, res); });
     posts.unshift(newPost);
   }
 
-  document.getElementById('f-name').value='';
-  document.getElementById('f-tel').value='';
-  document.getElementById('f-cat').value='';
-  document.getElementById('f-msg').value='';
-  document.getElementsByName('vis')[0].checked=true;
+  // 폼 초기화
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-tel').value  = '';
+  document.getElementById('f-cat').value  = '';
+  document.getElementById('f-msg').value  = '';
+  document.getElementsByName('vis')[0].checked = true;
 
-  btn.disabled=false; btn.textContent='문의 접수하기 →';
+  btn.disabled = false; btn.textContent = '문의 접수하기 →';
   renderPosts();
   alert('문의가 접수되었습니다.\n빠른 시일 내에 연락드리겠습니다.');
 }
 
-/* ── 렌더 ── */
-function renderPosts(){
-  var body=document.getElementById('board-body');
-  var cnt =document.getElementById('cnt');
-  cnt.textContent = posts.length+'건';
+/* ── 렌더링 ── */
+function renderPosts() {
+  var body = document.getElementById('board-body');
+  var cnt  = document.getElementById('cnt');
+  cnt.textContent = posts.length + '건';
 
-  // 기존 카드 전부 제거
-  while(body.firstChild) body.removeChild(body.firstChild);
+  // 전체 초기화
+  while (body.firstChild) body.removeChild(body.firstChild);
 
-  if(posts.length===0){
-    var em=document.createElement('div'); em.id='empty-msg'; em.className='board-empty';
-    em.textContent='아직 접수된 문의가 없습니다.'; body.appendChild(em); return;
+  // 표시할 목록 (비공개는 관리자만)
+  var visible = posts.filter(function(p) {
+    return p.vis === 'public' || isAdmin;
+  });
+
+  if (visible.length === 0) {
+    var em = document.createElement('div');
+    em.className = 'board-empty';
+    em.textContent = '아직 접수된 문의가 없습니다.';
+    body.appendChild(em);
+    return;
   }
 
-  posts.forEach(function(p){
-    var priv=(p.vis==='private');
+  visible.forEach(function(p) {
+    var priv = (p.vis === 'private');
+    var card = document.createElement('div');
+    card.className = 'post-card ' + (priv ? 'prv' : 'pub');
 
-    // 비공개글은 관리자만 표시
-    if(priv && !isAdmin) return;
-
-    var card=document.createElement('div');
-    card.className='post-card '+(priv?'prv':'pub');
-
-    // 삭제 버튼 (관리자만)
-    if(isAdmin){
-      var delBtn=document.createElement('button');
-      delBtn.className='del-post-btn'; delBtn.textContent='🗑️ 삭제';
-      (function(pid){ delBtn.onclick=function(){ deletePost(pid); }; })(p.id);
+    // 관리자 삭제 버튼
+    if (isAdmin) {
+      var delBtn = document.createElement('button');
+      delBtn.className = 'del-post-btn';
+      delBtn.textContent = '🗑️ 삭제';
+      (function(pid) { delBtn.onclick = function() { deletePost(pid); }; })(p.id);
       card.appendChild(delBtn);
     }
 
-    var hdr=document.createElement('div'); hdr.className='post-hdr';
-    var left=document.createElement('div'); left.className='post-left';
-
-    var nm=document.createElement('span'); nm.className='post-name';
-    nm.textContent=priv?'🔒 비공개 문의':p.name;
-
-    var ct=document.createElement('span'); ct.className='post-cat'; ct.textContent=p.cat;
+    // 헤더
+    var hdr  = document.createElement('div'); hdr.className = 'post-hdr';
+    var left = document.createElement('div'); left.className = 'post-left';
+    var nm   = document.createElement('span'); nm.className = 'post-name';
+    nm.textContent = priv ? '🔒 비공개 문의' : p.name;
+    var ct = document.createElement('span'); ct.className = 'post-cat'; ct.textContent = p.cat;
     left.appendChild(nm); left.appendChild(ct);
-
-    var dt=document.createElement('span'); dt.className='post-date'; dt.textContent=p.date;
+    var dt = document.createElement('span'); dt.className = 'post-date'; dt.textContent = p.date;
     hdr.appendChild(left); hdr.appendChild(dt);
 
-    var bd=document.createElement('p');
-    bd.className='post-body '+(priv?'prv':'pub');
+    // 본문 (비공개는 관리자만 내용 표시)
+    var bd = document.createElement('p');
+    bd.className = 'post-body' + (priv ? ' prv' : '');
     bd.textContent = p.msg;
-    card.appendChild(hdr); card.appendChild(bd);
 
-    // 연락처 표시
-    if(priv && isAdmin){
-      var tl=document.createElement('div'); tl.className='post-tel';
-      tl.innerHTML='<span style="color:#f87171;font-weight:600;">🔒 비공개</span> &nbsp;·&nbsp; 이름: <strong style="color:#f8f7f3;">'+p.name+'</strong> &nbsp;·&nbsp; 연락처: <strong style="color:#f8f7f3;">'+p.tel+'</strong>';
+    card.appendChild(hdr);
+    card.appendChild(bd);
+
+    // 연락처
+    if (priv && isAdmin) {
+      var tl = document.createElement('div'); tl.className = 'post-tel';
+      tl.innerHTML = '<span style="color:#f87171;font-weight:600;">🔒 비공개</span> &nbsp;·&nbsp; 이름: <strong style="color:#f8f7f3;">' + p.name + '</strong> &nbsp;·&nbsp; 연락처: <strong style="color:#f8f7f3;">' + p.tel + '</strong>';
       card.appendChild(tl);
-    } else if(!priv){
-      var tl2=document.createElement('div'); tl2.className='post-tel';
-      tl2.textContent='연락처: '+p.tel; card.appendChild(tl2);
+    } else if (!priv) {
+      var tl2 = document.createElement('div'); tl2.className = 'post-tel';
+      tl2.textContent = '연락처: ' + p.tel;
+      card.appendChild(tl2);
     }
+
     body.appendChild(card);
   });
-
-  // 카드가 하나도 안 붙었으면 빈 메시지
-  if(!body.querySelector('.post-card')){
-    var em2=document.createElement('div'); em2.className='board-empty';
-    em2.textContent='아직 접수된 문의가 없습니다.'; body.appendChild(em2);
-  }
 }
 
 /* ── 삭제 ── */
-async function deletePost(id){
-  if(!confirm('이 문의를 삭제하시겠습니까?')) return;
-  var key=getCfg('jb_key'), bin=getCfg('jb_bin');
-  if(key&&bin){
-    var arr=(await jbGet()||[]).filter(function(p){ return p.id!==id; });
-    await jbSave(arr); posts=arr;
+async function deletePost(id) {
+  if (!confirm('이 문의를 삭제하시겠습니까?')) return;
+  if (cfg('jb_key') && cfg('jb_bin')) {
+    var arr = (await jbGetPosts() || []).filter(function(p) { return p.id !== id; });
+    await jbSavePosts(arr);
+    posts = arr;
   } else {
-    await new Promise(function(res){ localDel(id,res); });
-    posts=posts.filter(function(p){ return p.id!==id; });
+    await new Promise(function(res) { localDel(id, res); });
+    posts = posts.filter(function(p) { return p.id !== id; });
   }
   renderPosts();
 }
 
 /* ── 관리자 ── */
-function toggleAdmin(){
-  if(isAdmin){
-    isAdmin=false;
-    document.getElementById('board-wrap').classList.remove('admin-mode');
+function toggleAdmin() {
+  if (isAdmin) {
+    isAdmin = false;
     document.getElementById('admin-btn').classList.remove('on');
-    document.getElementById('admin-btn').textContent='🔐 관리자';
-    renderPosts(); return;
+    document.getElementById('admin-btn').textContent = '🔐 관리자';
+    renderPosts();
+    return;
   }
-  document.getElementById('admin-pw').value='';
-  document.getElementById('admin-err').textContent='';
+  document.getElementById('admin-pw').value = '';
+  document.getElementById('admin-err').textContent = '';
   document.getElementById('admin-modal').classList.add('open');
-  setTimeout(function(){ document.getElementById('admin-pw').focus(); },100);
+  setTimeout(function() { document.getElementById('admin-pw').focus(); }, 100);
 }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-function checkAdmin(){
-  var input=document.getElementById('admin-pw').value;
-  var err=document.getElementById('admin-err');
-  var el=document.getElementById('admin-pw');
-  if(!input||input.length<4){ err.textContent='4자리 이상 입력해 주세요.'; shake(el); return; }
-  var saved=localStorage.getItem('su_admin_pw');
-  if(!saved){ localStorage.setItem('su_admin_pw',input); closeModal('admin-modal'); activateAdmin(); alert('✅ 관리자 비밀번호가 설정되었습니다!'); }
-  else if(input===saved){ closeModal('admin-modal'); activateAdmin(); }
-  else{ err.textContent='비밀번호가 틀렸습니다.'; el.value=''; shake(el); setTimeout(function(){ err.textContent=''; },1500); }
+function closeAdminModal() {
+  document.getElementById('admin-modal').classList.remove('open');
 }
-function activateAdmin(){
-  isAdmin=true;
-  document.getElementById('board-wrap').classList.add('admin-mode');
+function checkAdmin() {
+  var input = document.getElementById('admin-pw').value;
+  var err   = document.getElementById('admin-err');
+  var el    = document.getElementById('admin-pw');
+  if (!input || input.length < 4) {
+    err.textContent = '4자리 이상 입력해 주세요.';
+    el.classList.add('shake'); setTimeout(function(){ el.classList.remove('shake'); }, 350);
+    return;
+  }
+  var saved = localStorage.getItem('su_admin_pw');
+  if (!saved) {
+    localStorage.setItem('su_admin_pw', input);
+    closeAdminModal();
+    activateAdmin();
+    alert('✅ 관리자 비밀번호가 설정되었습니다!');
+  } else if (input === saved) {
+    closeAdminModal();
+    activateAdmin();
+  } else {
+    err.textContent = '비밀번호가 틀렸습니다.';
+    el.value = '';
+    el.classList.add('shake');
+    setTimeout(function(){ el.classList.remove('shake'); err.textContent=''; }, 1500);
+  }
+}
+function activateAdmin() {
+  isAdmin = true;
   document.getElementById('admin-btn').classList.add('on');
-  document.getElementById('admin-btn').textContent='🔓 관리자 모드 ON';
+  document.getElementById('admin-btn').textContent = '🔓 관리자 ON';
   renderPosts();
 }
-function shake(el){ el.classList.add('shake'); setTimeout(function(){ el.classList.remove('shake'); },350); }
 
 /* ── 초기화 ── */
-updateSetupUI();
+updateSyncUI();
 loadPosts();
 </script>
 </body>
