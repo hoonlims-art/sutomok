@@ -262,6 +262,11 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
       </div>
       <div id="doc-preview"></div>
     </div>
+    <!-- 다운로드 비밀번호 -->
+    <div class="form-group">
+      <label>📥 다운로드 비밀번호 (선택)</label>
+      <input type="password" id="p-dlpw" placeholder="설정 시 파일 다운로드 시 비밀번호 입력 필요">
+    </div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('add-overlay')">취소</button>
       <button class="btn-save" onclick="saveProject()">저장하기</button>
@@ -368,7 +373,7 @@ function bgClick(e, id) {
   if (e.target === document.getElementById(id)) closeModal(id);
 }
 function resetForm() {
-  ['p-title','p-loc','p-desc'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['p-title','p-loc','p-desc','p-dlpw'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('p-cat').value  = '';
   document.getElementById('p-date').value = '';
   document.getElementById('img-preview').innerHTML = '';
@@ -456,8 +461,10 @@ function saveProject() {
     + String(now.getMonth()+1).padStart(2,'0')+'.'
     + String(now.getDate()).padStart(2,'0');
 
+  var dlpw = document.getElementById('p-dlpw').value.trim();
   var proj = { title:title, cat:cat, loc:loc, date:date, desc:desc, reg:reg,
-               images: tmpImgs.slice(), docs: tmpDocs.slice() };
+               images: tmpImgs.slice(), docs: tmpDocs.slice(),
+               dlPassword: dlpw || '' };
 
   dbAdd(proj, function() {
     closeModal('add-overlay');
@@ -583,28 +590,39 @@ function openDetail(id) {
     var dlbl = document.createElement('div'); dlbl.className = 'sec-label2';
     dlbl.textContent = '📄 도면 · 문서 ('+proj.docs.length+'개)';
     c.appendChild(dlbl);
-    proj.docs.forEach(function(doc) {
+        proj.docs.forEach(function(doc) {
       var row = document.createElement('div'); row.className = 'detail-doc';
       row.innerHTML = '<span style="font-size:20px;">'+docIcon(doc.name)+'</span>'
         +'<div class="doc-info"><div class="doc-name">'+doc.name+'</div>'
         +'<div class="doc-size">'+fmtSize(doc.size)+'</div></div>';
-      var a = document.createElement('a');
-      a.className = 'dl-btn'; a.textContent = '다운로드';
-      a.href = doc.dataUrl; a.download = doc.name;
-      row.appendChild(a);
+      var dlBtn = document.createElement('button');
+      dlBtn.className = 'dl-btn';
+      dlBtn.textContent = proj.dlPassword ? '🔒 다운로드' : '다운로드';
+      (function(d, p){
+        dlBtn.onclick = function(){
+          if(p.dlPassword && !projAdmin){
+            openDlPw(d, p.dlPassword);
+          } else {
+            triggerDownload(d.dataUrl, d.name);
+          }
+        };
+      })(doc, proj);
+      row.appendChild(dlBtn);
       c.appendChild(row);
     });
   }
 
-  // 삭제
-  var del = document.createElement('button');
-  del.className = 'del-proj-btn'; del.textContent = '🗑️ 프로젝트 삭제';
-  del.onclick = function(){
-    if(confirm('이 프로젝트를 삭제할까요?')) {
-      dbDelete(proj.id, function(){ closeModal('detail-overlay'); loadAll(); });
-    }
-  };
-  c.appendChild(del);
+  // 삭제 (관리자만)
+  if(projAdmin){
+    var del = document.createElement('button');
+    del.className = 'del-proj-btn'; del.textContent = '🗑️ 프로젝트 삭제';
+    del.onclick = function(){
+      if(confirm('이 프로젝트를 삭제할까요?')) {
+        dbDelete(proj.id, function(){ closeModal('detail-overlay'); loadAll(); });
+      }
+    };
+    c.appendChild(del);
+  }
 
   document.getElementById('detail-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -940,6 +958,47 @@ function openPwSetting(id) {
   openDetailWithPwCheck(id);
 }
 
+
+/* ── 다운로드 비밀번호 ── */
+var pendingDlDoc = null;
+var pendingDlPw  = null;
+
+function openDlPw(doc, pw) {
+  pendingDlDoc = doc;
+  pendingDlPw  = pw;
+  document.getElementById('dl-pw-input').value = '';
+  document.getElementById('dl-pw-err').textContent = '';
+  document.getElementById('dl-pw-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){ document.getElementById('dl-pw-input').focus(); }, 100);
+}
+function closeDlPw() {
+  document.getElementById('dl-pw-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  pendingDlDoc = null; pendingDlPw = null;
+}
+function submitDlPw() {
+  var input = document.getElementById('dl-pw-input').value;
+  var err   = document.getElementById('dl-pw-err');
+  var el    = document.getElementById('dl-pw-input');
+  if (!input) { err.textContent = '비밀번호를 입력해 주세요.'; return; }
+  if (input === pendingDlPw) {
+    closeDlPw();
+    triggerDownload(pendingDlDoc.dataUrl, pendingDlDoc.name);
+  } else {
+    err.textContent = '비밀번호가 틀렸습니다.';
+    el.value = '';
+    el.classList.add('shake');
+    setTimeout(function(){ el.classList.remove('shake'); err.textContent=''; }, 1400);
+  }
+}
+function triggerDownload(dataUrl, name) {
+  var a = document.createElement('a');
+  a.href = dataUrl; a.download = name;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+}
+
 </script>
 
 
@@ -1038,6 +1097,23 @@ function openPwSetting(id) {
     <div class="pw-check-btns">
       <button class="pw-check-cancel" onclick="closePwCheck()">취소</button>
       <button class="pw-check-ok" onclick="submitPwCheck()">확인</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- 다운로드 비밀번호 확인 모달 -->
+<div class="pw-check-overlay" id="dl-pw-overlay">
+  <div class="pw-check-box">
+    <div class="lock-icon">📥</div>
+    <h4>다운로드 비밀번호</h4>
+    <p>이 파일은 비밀번호로 보호되어 있습니다.</p>
+    <input type="password" id="dl-pw-input" placeholder="••••••" maxlength="20"
+      onkeydown="if(event.key==='Enter')submitDlPw()">
+    <div class="pw-check-err" id="dl-pw-err"></div>
+    <div class="pw-check-btns">
+      <button class="pw-check-cancel" onclick="closeDlPw()">취소</button>
+      <button class="pw-check-ok" onclick="submitDlPw()">다운로드</button>
     </div>
   </div>
 </div>
