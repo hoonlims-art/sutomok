@@ -125,6 +125,36 @@ footer{background:var(--navy);border-top:1px solid var(--line);padding:40px 60px
 .admin-proj-mode .proj-card{position:relative;}
 .admin-proj-mode .edit-card-btn{display:block;}
 
+
+/* 프로젝트 잠금 */
+.lock-badge{position:absolute;top:10px;left:10px;background:rgba(239,68,68,0.85);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;z-index:2;}
+.lock-set-badge{position:absolute;top:10px;left:10px;background:rgba(201,168,76,0.85);color:#0a1628;font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;z-index:2;cursor:pointer;}
+.proj-pw-form{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:20px 24px;margin-top:16px;}
+.proj-pw-form h5{font-size:13px;color:var(--gold);font-weight:600;margin-bottom:12px;}
+.proj-pw-row{display:flex;gap:10px;align-items:center;}
+.proj-pw-input{flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:9px 12px;color:#fff;font-size:13px;outline:none;font-family:monospace;letter-spacing:3px;}
+.proj-pw-input:focus{border-color:var(--gold);}
+.proj-pw-btn{padding:9px 18px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;}
+.proj-pw-btn:hover{background:var(--gold-light);}
+.proj-pw-del{padding:9px 14px;background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.25);border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;}
+.proj-pw-del:hover{background:rgba(239,68,68,0.22);}
+/* 비밀번호 입력 모달 */
+.pw-check-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:400;align-items:center;justify-content:center;}
+.pw-check-overlay.open{display:flex;}
+.pw-check-box{background:#0d1e35;border:1px solid rgba(201,168,76,0.3);border-radius:16px;padding:36px;width:100%;max-width:340px;text-align:center;}
+.pw-check-box .lock-icon{font-size:40px;margin-bottom:12px;}
+.pw-check-box h4{font-family:'Noto Serif KR',serif;font-size:18px;color:var(--white);margin-bottom:6px;}
+.pw-check-box p{font-size:13px;color:var(--gray);margin-bottom:20px;}
+.pw-check-box input{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px;color:#fff;font-size:18px;text-align:center;letter-spacing:6px;outline:none;font-family:monospace;margin-bottom:8px;}
+.pw-check-box input:focus{border-color:var(--gold);}
+.pw-check-box input.shake{animation:pwShake 0.3s;}
+@keyframes pwShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.pw-check-err{font-size:12px;color:#f87171;min-height:16px;margin-bottom:10px;}
+.pw-check-btns{display:flex;gap:10px;}
+.pw-check-cancel{flex:1;padding:12px;background:rgba(255,255,255,0.07);color:var(--white);border:1px solid rgba(255,255,255,0.12);border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit;}
+.pw-check-ok{flex:2;padding:12px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+.pw-check-ok:hover{background:var(--gold-light);}
+
 </style>
 </head>
 <body>
@@ -456,7 +486,7 @@ function renderGrid() {
   list.forEach(function(proj) {
     var card = document.createElement('div');
     card.className = 'proj-card';
-    card.onclick = function(){ openDetail(proj.id); };
+    card.onclick = function(){ openDetailWithPwCheck(proj.id); };
     card.dataset.pid = proj.id;
 
     // 썸네일
@@ -747,6 +777,169 @@ function saveEdit(){
   req.onerror=function(){ alert('저장 오류가 발생했습니다.'); };
 }
 
+
+/* ══ 프로젝트 비밀번호 기능 ══ */
+var pendingDetailId = null; // 비밀번호 확인 후 열 프로젝트 id
+var unlockedIds = {};       // 세션 내 해제된 프로젝트 id 목록
+
+/* 카드 클릭 시 비밀번호 체크 후 상세 오픈 */
+function openDetailWithPwCheck(id) {
+  var proj = allProjects.find(function(p){ return p.id === id; });
+  if (!proj) return;
+
+  // 비밀번호 없거나 이미 해제됐으면 바로 오픈
+  if (!proj.password || unlockedIds[id]) {
+    openDetail(id);
+    return;
+  }
+
+  // 비밀번호 확인 모달 오픈
+  pendingDetailId = id;
+  document.getElementById('pw-check-input').value = '';
+  document.getElementById('pw-check-err').textContent = '';
+  document.getElementById('pw-check-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){ document.getElementById('pw-check-input').focus(); }, 100);
+}
+
+function closePwCheck() {
+  document.getElementById('pw-check-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  pendingDetailId = null;
+}
+
+function submitPwCheck() {
+  var input = document.getElementById('pw-check-input').value;
+  var err   = document.getElementById('pw-check-err');
+  var el    = document.getElementById('pw-check-input');
+  var proj  = pendingDetailId ? allProjects.find(function(p){ return p.id === pendingDetailId; }) : null;
+
+  if (!input) { err.textContent = '비밀번호를 입력해 주세요.'; return; }
+  if (!proj)  { closePwCheck(); return; }
+
+  if (input === proj.password) {
+    unlockedIds[pendingDetailId] = true;
+    closePwCheck();
+    openDetail(pendingDetailId);
+  } else {
+    err.textContent = '비밀번호가 틀렸습니다.';
+    el.value = '';
+    el.classList.add('shake');
+    setTimeout(function(){ el.classList.remove('shake'); err.textContent=''; }, 1400);
+  }
+}
+
+/* 관리자 모드에서 카드에 비밀번호 설정 버튼 추가 */
+var _baseRenderGrid = renderGrid;
+renderGrid = function(){
+  _baseRenderGrid();
+  // 잠금 배지 추가
+  var cards = document.querySelectorAll('.proj-card');
+  cards.forEach(function(card){
+    var pid = parseInt(card.dataset.pid);
+    var proj = allProjects.find(function(p){ return p.id===pid; });
+    if (!proj) return;
+
+    // 기존 배지 제거 후 재생성
+    var oldBadge = card.querySelector('.lock-badge,.lock-set-badge');
+    if (oldBadge) oldBadge.remove();
+
+    if (proj.password) {
+      var badge = document.createElement('span');
+      badge.className = 'lock-badge';
+      badge.textContent = '🔒 비공개';
+      card.appendChild(badge);
+    } else if (projAdmin) {
+      var setBadge = document.createElement('span');
+      setBadge.className = 'lock-set-badge';
+      setBadge.textContent = '🔓 비밀번호 설정';
+      (function(id){ setBadge.onclick = function(e){ e.stopPropagation(); openPwSetting(id); }; })(pid);
+      card.appendChild(setBadge);
+    }
+  });
+};
+
+/* 관리자 상세 모달에 비밀번호 설정 섹션 추가 */
+var _baseOpenDetail = openDetail;
+openDetail = function(id){
+  _baseOpenDetail(id);
+  var proj = allProjects.find(function(p){ return p.id===id; });
+  if (!proj || !projAdmin) return;
+
+  var c = document.getElementById('detail-content');
+
+  // 비밀번호 설정 폼
+  var pwForm = document.createElement('div');
+  pwForm.className = 'proj-pw-form';
+  pwForm.innerHTML = '<h5>🔐 비밀번호 설정 (관리자)</h5>'
+    + '<div style="font-size:12px;color:#94a3b8;margin-bottom:10px;">'
+    + (proj.password ? '현재 비밀번호가 설정되어 있습니다. 변경하거나 삭제할 수 있습니다.' : '비밀번호를 설정하면 방문자가 열람 시 입력이 필요합니다.')
+    + '</div>';
+
+  var row = document.createElement('div');
+  row.className = 'proj-pw-row';
+
+  var inp = document.createElement('input');
+  inp.type = 'password'; inp.className = 'proj-pw-input';
+  inp.placeholder = proj.password ? '새 비밀번호 입력' : '비밀번호 입력';
+  inp.maxLength = 20;
+
+  var saveBtn = document.createElement('button');
+  saveBtn.className = 'proj-pw-btn';
+  saveBtn.textContent = proj.password ? '변경' : '설정';
+  (function(projId, inputEl){
+    saveBtn.onclick = function(){ saveProjPw(projId, inputEl.value); };
+  })(id, inp);
+
+  row.appendChild(inp);
+  row.appendChild(saveBtn);
+
+  // 비밀번호 삭제 버튼 (설정된 경우만)
+  if (proj.password) {
+    var delBtn = document.createElement('button');
+    delBtn.className = 'proj-pw-del';
+    delBtn.textContent = '삭제';
+    (function(projId){ delBtn.onclick = function(){ removeProjPw(projId); }; })(id);
+    row.appendChild(delBtn);
+  }
+
+  pwForm.appendChild(row);
+  c.appendChild(pwForm);
+};
+
+/* 비밀번호 저장 */
+function saveProjPw(id, pw) {
+  if (!pw || pw.length < 2) { alert('2자리 이상 입력해 주세요.'); return; }
+  var proj = allProjects.find(function(p){ return p.id===id; });
+  if (!proj) return;
+  proj.password = pw;
+  var tx = db.transaction('projects','readwrite');
+  tx.objectStore('projects').put(proj).onsuccess = function(){
+    alert('✅ 비밀번호가 설정되었습니다!');
+    closeModal('detail-overlay');
+    loadAll();
+  };
+}
+
+/* 비밀번호 삭제 */
+function removeProjPw(id) {
+  if (!confirm('비밀번호를 삭제하시겠습니까? 누구나 열람 가능해집니다.')) return;
+  var proj = allProjects.find(function(p){ return p.id===id; });
+  if (!proj) return;
+  delete proj.password;
+  var tx = db.transaction('projects','readwrite');
+  tx.objectStore('projects').put(proj).onsuccess = function(){
+    alert('🔓 비밀번호가 삭제되었습니다.');
+    closeModal('detail-overlay');
+    loadAll();
+  };
+}
+
+/* 상세 보기 오픈 바로가기 (배지에서 사용) */
+function openPwSetting(id) {
+  openDetailWithPwCheck(id);
+}
+
 </script>
 
 
@@ -828,6 +1021,23 @@ function saveEdit(){
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('pw-overlay')">취소</button>
       <button class="btn-save" onclick="checkProjAdmin()">확인</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- 프로젝트 비밀번호 확인 모달 -->
+<div class="pw-check-overlay" id="pw-check-overlay">
+  <div class="pw-check-box">
+    <div class="lock-icon">🔒</div>
+    <h4>비공개 프로젝트</h4>
+    <p>이 프로젝트는 비밀번호로 보호되어 있습니다.</p>
+    <input type="password" id="pw-check-input" placeholder="••••••" maxlength="20"
+      onkeydown="if(event.key==='Enter')submitPwCheck()">
+    <div class="pw-check-err" id="pw-check-err"></div>
+    <div class="pw-check-btns">
+      <button class="pw-check-cancel" onclick="closePwCheck()">취소</button>
+      <button class="pw-check-ok" onclick="submitPwCheck()">확인</button>
     </div>
   </div>
 </div>
